@@ -1,0 +1,54 @@
+{
+  "manifest_version": 2,
+  "name": "PrivacyX",
+  "version": "4.7",
+  "description": "Advanced Privacy & Security Suite - Ultimate Protection & Script Injection. By Mixaoc & W",
+  "author": "https://github.com/mixaoc",
+  "permissions": [
+    "browsingData",
+    "webRequest",
+    "webRequestBlocking",
+    "cookies",
+    "history",
+    "storage",
+    "activeTab",
+    "notifications",
+    "alarms",
+    "clipboardRead",
+    "tabs",
+    "contextMenus",
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": true
+  },
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "128": "icons/icon.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "icons": {
+    "128": "icons/icon.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{bfabe2a9-a881-4fa2-a85d-8bedd3d3dcd8}"
+    }
+  }
+}

@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=800, initial-scale=1.0">
+  <title>PrivacyX Pro</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <!-- Animated Background Particles -->
+  <canvas id="particleCanvas"></canvas>
+
+  <div id="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-glow"></div>
+      <div class="header-left">
+        <div class="logo-container">
+          <img src="icons/icon.png" alt="PrivacyX" class="header-logo" onerror="this.style.display='none'">
+          <div class="logo-ring"></div>
+          <div class="logo-ring ring-2"></div>
+        </div>
+        <div class="header-text">
+          <h1 class="app-title">PrivacyX <span class="pro-badge">PRO</span></h1>
+          <p class="app-subtitle">Advanced Privacy Suite</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="status-indicator online">
+          <div class="status-dot"></div>
+          <span class="status-text">Protected</span>
+        </div>
+        <div class="header-stats">
+          <div class="mini-stat" title="Threats Blocked">
+            <i class="fas fa-shield-halved"></i>
+            <span id="headerBlocked">0</span>
+          </div>
+          <div class="mini-stat" title="Total Requests">
+            <i class="fas fa-globe"></i>
+            <span id="headerRequests">0</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="tab-navigation">
+      <div class="nav-track">
+        <div class="nav-indicator"></div>
+      </div>
+      <button class="tab-btn active" data-tab="privacy" data-tooltip="Privacy">
+        <i class="fas fa-shield-halved"></i>
+        <span>Privacy</span>
+      </button>
+      <button class="tab-btn" data-tab="network" data-tooltip="Network">
+        <i class="fas fa-network-wired"></i>
+        <span>Network</span>
+      </button>
+      <button class="tab-btn" data-tab="system" data-tooltip="System">
+        <i class="fas fa-microchip"></i>
+        <span>System</span>
+      </button>
+      <button class="tab-btn" data-tab="cookies" data-tooltip="Cookies">
+        <i class="fas fa-cookie"></i>
+        <span>Cookies</span>
+      </button>
+      <button class="tab-btn" data-tab="clipboard" data-tooltip="Clipboard">
+        <i class="fas fa-clipboard"></i>
+        <span>Clipboard</span>
+      </button>
+      <button class="tab-btn" data-tab="notes" data-tooltip="Notes">
+        <i class="fas fa-note-sticky"></i>
+        <span>Notes</span>
+      </button>
+      <button class="tab-btn" data-tab="identity" data-tooltip="Identity">
+        <i class="fas fa-user-secret"></i>
+        <span>Identity</span>
+      </button>
+      <button class="tab-btn" data-tab="fingerprint" data-tooltip="Anti-FP">
+        <i class="fas fa-fingerprint"></i>
+        <span>Anti-FP</span>
+      </button>
+      <button class="tab-btn" data-tab="scripts" data-tooltip="Scripts">
+        <i class="fas fa-code"></i>
+        <span>Scripts</span>
+      </button>
+      <button class="tab-btn" data-tab="stats" data-tooltip="Stats">
+        <i class="fas fa-chart-simple"></i>
+        <span>Stats</span>
+      </button>
+    </nav>
+
+    <!-- Toast Notifications Container -->
+    <div id="toastContainer"></div>
+
+    <!-- Content Panels -->
+    <div class="content-container">
+      
+      <!-- ==================== PRIVACY PANEL ==================== -->
+      <div id="privacy-panel" class="tab-panel active">
+        <div class="panel-header">
+          <div class="panel-icon"><i class="fas fa-shield-halved"></i></div>
+          <div>
+            <h2>Privacy Controls</h2>
+            <p class="panel-description">Manage your browsing data and privacy settings</p>
+          </div>
+        </div>
+        
+        <div class="options-grid">
+          <label class="option-card" data-animate="fade-up" style="--delay: 0.05s">
+            <div class="option-card-inner">
+              <div class="option-icon"><i class="fas fa-cookie-bite"></i></div>
+              <span class="option-label">Cookies</span>
+            </div>
+            <div class="toggle-container">
+              <input type="checkbox" id="cookies" class="toggle-input">
+              <div class="toggle-track"><div class="toggle-thumb"></div></div>
+            </div>
+          </label>
+          
+          <label class="option-card" data-animate="fade-up" style="--delay: 0.1s">
+            <div class="option-card-inner">
+              <div class="option-icon"><i class="fas fa-clock-rotate-left"></i></div>
+              <span class="option-label">History</span>
+            </div>
+            <div class="toggle-container">
+              <input type="checkbox" id="history" class="toggle-input">
+              <div class="toggle-track"><div class="toggle-thumb"></div></div>
+            </div>
+          </label>
+          
+          <label class="option-card" data-animate="fade-up" style="--delay: 0.15s">
+            <div class="option-card-inner">
+              <div class="option-icon"><i class="fas fa-database"></i></div>
+              <span class="option-label">Cache</span>
+            </div>
+            <div class="toggle-container">
+              <input type="checkbox" id="cache" class="toggle-input">
+              <div class="toggle-track"><div class="toggle-thumb"></div></div>
+            </div>
+          </label>
+          
+          <label class="option-card" data-animate="fade-up" style="--delay: 0.2s">
+            <div class="option-card-inner">
+              <div class="option-icon"><i class="fas fa-file-lines"></i></div>
+              <span class="option-label">Form Data</span>
+            </div>
+            <div class="toggle-container">
+              <input type="checkbox" id="formData" class="toggle-input">
+              <div class="toggle-track"><div class="toggle-thumb"></div></div>
+            </div>
+          </label>
+          
+          <label class="option-card" data-animate="fade-up" style="--delay: 0.25s">
+            <div class="option-card-inner">
+              <div class="option-icon"><i class="fas fa-download"></i></div>
+              <span class="option-label">Downloads</span>
+            </div>
+            <div class="toggle-container">
+              <input type="checkbox" id="downloads" class="toggle-input">
+              <div class="toggle-track"><div class="toggle-thumb"></div></div>
+            </div>
+          </label>
+          
+          <label class="option-card" data-animate="fade-up" style="--delay: 0.3s">
+            <div class="option-card-inner">
+              <div class="option-icon"><i class="fas fa-key"></i></div>
+              <span class="option-label">Passwords</span>
+            </div>
+            <div class="toggle-container">
+              <input type="checkbox" id="passwords" class="toggle-input">
+              <div class="toggle-track"><div class="toggle-thumb"></div></div>
+            </div>
+          </label>
+        </div>
+        
+        <div class="danger-zone">
+          <label class="option-card danger">
+            <div class="option-card-inner">
+              <div class="option-icon danger"><i class="fas fa-xmark"></i></div>
+              <span class="option-label">Close All Tabs</span>
+            </div>
+            <div class="toggle-container">
+              <input type="checkbox" id="closeTabs" class="toggle-input">
+              <div class="toggle-track danger"><div class="toggle-thumb"></div></div>
+            </div>
+          </label>
+        </div>
+        
+        <button id="cleanButton" class="action-btn primary glow">
+          <div class="btn-bg"></div>
+          <i class="fas fa-broom"></i>
+          <span>Clean & Protect</span>
+          <div class="btn-shine"></div>
+        </button>
+      </div>
+
+      <!-- ==================== NETWORK PANEL ==================== -->
+      <div id="network-panel" class="tab-panel">
+        <div class="panel-header">
+          <div class="panel-icon"><i class="fas fa-network-wired"></i></div>
+          <div>
+            <h2>Network Monitor</h2>
+            <p class="panel-description">Real-time HTTP request tracking</p>
+          </div>
+        </div>
+        
+        <div class="stats-row">
+          <div class="stat-chip">
+            <i class="fas fa-globe"></i>
+            <span class="stat-value" id="totalRequests">0</span>
+            <span class="stat-label">Total</span>
+          </div>
+          <div class="stat-chip blocked">
+            <i class="fas fa-shield-halved"></i>
+            <span class="stat-value" id="blockedRequests">0</span>
+            <span class="stat-label">Blocked</span>
+          </div>
+        </div>
+        
+        <div class="toolbar">
+          <button id="clearHttpBtn" class="action-btn secondary small">
+            <i class="fas fa-trash-can"></i>
+            <span>Clear</span>
+          </button>
+          <div class="filter-group">
+            <button class="filter-chip active" data-filter="all">All</button>
+            <button class="filter-chip" data-filter="blocked">Blocked</button>
+            <button class="filter-chip" data-filter="xhr">XHR</button>
+          </div>
+        </div>
+        
+        <div id="httpRequestsList" class="scroll-list">
+          <div class="empty-state">
+            <i class="fas fa-satellite-dish"></i>
+            <p>No requests captured yet</p>
+            <span class="empty-hint">Browse the web to see traffic</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== SYSTEM PANEL ==================== -->
+      <div id="system-panel" class="tab-panel">
+        <div class="panel-header">
+          <div class="panel-icon"><i class="fas fa-microchip"></i></div>
+          <div>
+            <h2>System Monitor</h2>
+            <p class="panel-description">Real-time system and tabs information</p>
+          </div>
+        </div>
+        
+        <div class="system-grid">
+          <div class="system-card" data-animate="fade-up" style="--delay: 0.05s">
+            <div class="system-card-icon"><i class="fas fa-memory"></i></div>
+            <div class="system-card-data">
+              <span class="system-value" id="memoryUsage">0 MB</span>
+              <span class="system-label">Memory</span>
+            </div>
+            <div class="system-card-bar">
+              <div class="bar-fill memory" style="width: 30%"></div>
+            </div>
+          </div>
+          
+          <div class="system-card" data-animate="fade-up" style="--delay: 0.1s">
+            <div class="system-card-icon"><i class="fas fa-microchip"></i></div>
+            <div class="system-card-data">
+              <span class="system-value" id="cpuUsage">0%</span>
+              <span class="system-label">CPU</span>
+            </div>
+            <div class="system-card-bar">
+              <div class="bar-fill cpu" style="width: 15%"></div>
+            </div>
+          </div>
+          
+          <div class="system-card" data-animate="fade-up" style="--delay: 0.15s">
+            <div class="system-card-icon"><i class="fas fa-display"></i></div>
+            <div class="system-card-data">
+              <span class="system-value" id="gpuInfo">N/A</span>
+              <span class="system-label">GPU</span>
+            </div>
+          </div>
+          
+          <div class="system-card" data-animate="fade-up" style="--delay: 0.2s">
+            <div class="system-card-icon"><i class="fas fa-window-restore"></i></div>
+            <div class="system-card-data">
+              <span class="system-value" id="tabsCount">0</span>
+              <span class="system-label">Active Tabs</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="section-divider">
+          <span>Active Tabs</span>
+        </div>
+        
+        <div id="activeTabsList" class="scroll-list">
+          <div class="empty-state">
+            <i class="fas fa-window-restore"></i>
+            <p>Loading tabs...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== COOKIES PANEL ==================== -->
+      <div id="cookies-panel" class="tab-panel">
+        <div class="panel-header">
+          <div class="panel-icon"><i class="fas fa-cookie"></i></div>
+          <div>
+            <h2>Cookies Manager</h2>
+            <p class="panel-description">View, add, and manage cookies in real-time</p>
+          </div>
+        </div>
+        
+        <div class="toolbar">
+          <button id="refreshCookiesBtn" class="action-btn secondary small">
+            <i class="fas fa-rotate"></i>
+            <span>Refresh</span>
+          </button>
+          <button id="exportCookiesBtn" class="action-btn secondary small">
+            <i class="fas fa-download"></i>
+            <span>Export</span>
+          </button>
+          <button id="importCookiesBtn" class="action-btn secondary small">
+            <i class="fas fa-upload"></i>
+            <span>Import</span>
+          </button>
+          <input type="file" id="cookieFileInput" accept=".json" style="display: none;">
+        </div>
+        
+        <div class="collapsible-section">
+          <button class="collapsible-toggle" id="addCookieToggle">
+            <i class="fas fa-plus-circle"></i>
+            <span>Add New Cookie</span>
+            <i class="fas fa-chevron-down toggle-arrow"></i>
+          </button>
+          <div class="collapsible-content" id="addCookieContent">
+            <div class="form-grid">
+              <input type="text" id="cookieName" placeholder="Cookie Name" class="form-input">
+              <input type="text" id="cookieValue" placeholder="Cookie Value" class="form-input">
+              <input type="text" id="cookieDomain" placeholder="Domain (e.g., .example.com)" class="form-input">
+              <input type="text" id="cookiePath" placeholder="Path (default: /)" class="form-input">
+            </div>
+            <button id="addCookieBtn" class="action-btn primary small" style="margin-top: 10px">
+              <i class="fas fa-plus"></i>
+              <span>Add Cookie</span>
+            </button>
+          </div>
+        </div>
+        
+        <div class="section-divider">
+          <span>Current Cookies (<span id="cookieCount">0</span>)</span>
+        </div>
+        
+        <div id="cookiesList" class="scroll-list">
+          <div class="empty-state">
+            <i class="fas fa-cookie"></i>
+            <p>No cookies found</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== CLIPBOARD PANEL ==================== -->
+      <div id="clipboard-panel" class="tab-panel">
+        <div class="panel-header">
+          <div class="panel-icon"><i class="fas fa-clipboard"></i></div>
+          <div>
+            <h2>Clipboard History</h2>
+            <p class="panel-description">View and manage your clipboard history</p>
+          </div>
+        </div>
+        
+        <div class="toolbar">
+          <button id="clearClipboardBtn" class="action-btn secondary small">
+            <i class="fas fa-trash-can"></i>
+            <span>Clear All</span>
+          </button>
+        </div>
+        
+        <div id="clipboardList" class="scroll-list">
+          <div class="empty-state">
+            <i class="fas fa-clipboard-list"></i>
+            <p>No clipboard history yet</p>
+            <span class="empty-hint">Copy text to start tracking</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== NOTES PANEL ==================== -->
+      <div id="notes-panel" class="tab-panel">
+        <div class="panel-header">
+          <div class="panel-icon"><i class="fas fa-note-sticky"></i></div>
+          <div>
+            <h2>Notes & Reminders</h2>
+            <p class="panel-description">Create notes with optional reminders</p>
+          </div>
+        </div>
+        
+        <div class="note-composer">
+          <textarea id="noteInput" placeholder="Write your note here..." rows="3" class="form-textarea"></textarea>
+          <div class="note-composer-footer">
+            <div class="reminder-input">
+              <i class="fas fa-bell"></i>
+              <input type="datetime-local" id="reminderTime" class="form-input compact">
+            </div>
+            <button id="addNoteBtn" class="action-btn primary small">
+              <i class="fas fa-plus"></i>
+              <span>Add Note</span>
+            </button>
+          </div>
+        </div>
+        
+        <div id="notesList" class="scroll-list">
+          <div class="empty-state">
+            <i class="fas fa-sticky-note"></i>
+            <p>No notes yet</p>
+            <span class="empty-hint">Start writing above</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== IDENTITY PANEL ==================== -->
+      <div id="identity-panel" class="tab-panel">
+        <div class="panel-header">
+          <div class="panel-icon"><i class="fas fa-user-secret"></i></div>
+          <div>
+            <h2>Identity Generator</h2>
+            <p class="panel-description">Generate realistic personal information for any country</p>
+          </div>
+        </div>
+        
+        <div class="identity-controls">
+          <div class="form-row">
+            <label for="countrySelect" class="form-label">Country</label>
+            <select id="countrySelect" class="form-select">
+              <option value="us">🇺🇸 United States</option>
+              <option value="fr">🇫🇷 France</option>
+              <option value="de">🇩🇪 Germany</option>
+              <option value="uk">🇬🇧 United Kingdom</option>
+              <option value="ca">🇨🇦 Canada</option>
+              <option value="au">🇦🇺 Australia</option>
+              <option value="jp">🇯🇵 Japan</option>
+              <option value="br">🇧🇷 Brazil</option>
+              <option value="in">🇮🇳 India</option>
+              <option value="cn">🇨🇳 China</option>
+            </select>
+          </div>
+          
+          <div class="options-row">
+            <label class="inline-toggle">
+              <input type="checkbox" id="randomGender" class="toggle-input" checked>
+              <div class="toggle-track small"><div class="toggle-thumb"></div></div>
+              <span>Random Gender</span>
+            </label>
+            <label class="inline-toggle">
+              <input type="checkbox" id="realisticAge" class="toggle-input" checked>
+              <div class="toggle-track small"><div class="toggle-thumb"></div></div>
+              <span>Realistic Age (18-65)</span>
+            </label>
+          </div>
+          
+          <button id="generateIdentityBtn" class="action-btn primary glow">
+            <div class="btn-bg"></div>
+            <i class="fas fa-wand-magic-sparkles"></i>
+            <span>Generate New Identity</span>
+            <div class="btn-shine"></div>
+          </button>
+        </div>
+
+        <div class="identity-results">
+          <div class="identity-section">
+            <h3><i class="fas fa-user"></i> Personal Information</h3>
+            <div class="identity-field"><label>Full Name</label><div class="field-value" id="fullName">-</div><button class="icon-btn copy-btn" data-field="fullName"><i class="fas fa-copy"></i></button></div>
+            <div class="identity-field"><label>Gender</label><div class="field-value" id="gender">-</div><button class="icon-btn copy-btn" data-field="gender"><i class="fas fa-copy"></i></button></div>
+            <div class="identity-field"><label>Date of Birth</label><div class="field-value" id="birthDate">-</div><button class="icon-btn copy-btn" data-field="birthDate"><i class="fas fa-copy"></i></button></div>
+            <div class="identity-field"><label>Age</label><div class="field-value" id="age">-</div><button class="icon-btn copy-btn" data-field="age"><i class="fas fa-copy"></i></button></div>
+          </div>
+
+          <div class="identity-section">
+            <h3><i class="fas fa-location-dot"></i> Address</h3>
+            <div class="identity-field"><label>Street</label><div class="field-value" id="streetAddress">-</div><button class="icon-btn copy-btn" data-field="streetAddress"><i class="fas fa-copy"></i></button></div>
+            <div class="identity-field"><label>City</label><div class="field-value" id="city">-</div><button class="icon-btn copy-btn" data-field="city"><i class="fas fa-copy"></i></button></div>
+            <div class="identity-field"><label>State</label><div class="field-value" id="state">-</div><button class="icon-btn copy-btn" data-field="state"><i class="fas fa-copy"></i></button></div>
+            <div class="identity-field"><label>ZIP Code</label><div class="field-value" id="postalCode">-</div><button class="icon-btn copy-btn" data-field="postalCode"><i class="fas fa-copy"></i></button></div>
+            <div class="identity-field"><label>Country</label><div class="field-value" id="country">-</div><button class="icon-btn copy-btn" data-field="country"><i class="fas fa-copy"></i></button></div>
+          </div>
+
+          <div class="identity-section">
+            <h3><i class="fas fa-phone"></i> Contact & Security</h3>
+            <div class="identity-field"><label>Phone</label><div class="field-value" id="phoneNumber">-</div><button class="icon-btn copy-btn" data-field="phoneNumber"><i class="fas fa-copy"></i></button></div>
+            <div class="identity-field"><label>Username</label><div class="field-value" id="username">-</div><button class="icon-btn copy-btn" data-field="username"><i class="fas fa-copy"></i></button></div>
+            <div class="identity-field"><label>Password</label><div class="field-value" id="password">-</div><button class="icon-btn copy-btn" data-field="password"><i class="fas fa-copy"></i></button></div>
+          </div>
+        </div>
+
+        <div class="identity-actions">
+          <button id="copyAllIdentityBtn" class="action-btn secondary">
+            <i class="fas fa-copy"></i>
+            <span>Copy All</span>
+          </button>
+          <button id="fillFormsBtn" class="action-btn primary">
+            <i class="fas fa-keyboard"></i>
+            <span>Auto-Fill Page</span>
+          </button>
+        </div>
+
+        <div class="section-divider">
+          <span>Generation History</span>
+        </div>
+        <div id="identityHistoryList" class="scroll-list compact">
+          <div class="empty-state">
+            <i class="fas fa-user-secret"></i>
+            <p>No identity history yet</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== FINGERPRINT PANEL ==================== -->
+      <div id="fingerprint-panel" class="tab-panel">
+        <div class="panel-header">
+          <div class="panel-icon"><i class="fas fa-fingerprint"></i></div>
+          <div>
+            <h2>Anti-Fingerprinting</h2>
+            <p class="panel-description">Protect against browser fingerprinting</p>
+          </div>
+        </div>
+        
+        <div class="fp-sections">
+          <div class="fp-card">
+            <div class="fp-card-header">
+              <i class="fas fa-globe"></i>
+              <span>WebRTC Protection</span>
+            </div>
+            <label class="inline-toggle">
+              <span>Disable WebRTC</span>
+              <input type="checkbox" id="webrtcEnabled" class="toggle-input" checked>
+              <div class="toggle-track small"><div class="toggle-thumb"></div></div>
+            </label>
+          </div>
+          
+          <div class="fp-card">
+            <div class="fp-card-header">
+              <i class="fas fa-user"></i>
+              <span>User Agent</span>
+            </div>
+            <select id="userAgentSelect" class="form-select"><option>Loading...</option></select>
+          </div>
+          
+          <div class="fp-card">
+            <div class="fp-card-header">
+              <i class="fas fa-desktop"></i>
+              <span>Operating System</span>
+            </div>
+            <div class="os-grid">
+              <label class="os-radio">
+                <input type="radio" name="os" value="Windows" checked>
+                <div class="os-card"><i class="fab fa-windows"></i><span>Windows</span></div>
+              </label>
+              <label class="os-radio">
+                <input type="radio" name="os" value="Mac">
+                <div class="os-card"><i class="fab fa-apple"></i><span>macOS</span></div>
+              </label>
+              <label class="os-radio">
+                <input type="radio" name="os" value="Linux">
+                <div class="os-card"><i class="fab fa-linux"></i><span>Linux</span></div>
+              </label>
+            </div>
+          </div>
+          
+          <div class="fp-card">
+            <div class="fp-card-header"><i class="fas fa-clock"></i><span>Timezone</span></div>
+            <select id="timezoneSelect" class="form-select"><option>Loading...</option></select>
+          </div>
+          
+          <div class="fp-card">
+            <div class="fp-card-header"><i class="fas fa-language"></i><span>Language</span></div>
+            <select id="languageSelect" class="form-select"><option>Loading...</option></select>
+          </div>
+          
+          <div class="fp-card">
+            <div class="fp-card-header"><i class="fas fa-display"></i><span>Screen Resolution</span></div>
+            <select id="resolutionSelect" class="form-select"><option>Loading...</option></select>
+          </div>
+          
+          <div class="fp-card">
+            <div class="fp-card-header"><i class="fas fa-microchip"></i><span>GPU Emulation</span></div>
+            <select id="gpuSelect" class="form-select"><option>Loading...</option></select>
+          </div>
+          
+          <div class="fp-card">
+            <div class="fp-card-header"><i class="fas fa-shield-halved"></i><span>Canvas Protection</span></div>
+            <label class="inline-toggle">
+              <span>Add Canvas Noise</span>
+              <input type="checkbox" id="canvasEnabled" class="toggle-input" checked>
+              <div class="toggle-track small"><div class="toggle-thumb"></div></div>
+            </label>
+          </div>
+        </div>
+        
+        <div class="fp-actions">
+          <button id="applyFingerprintBtn" class="action-btn primary">
+            <i class="fas fa-check"></i>
+            <span>Apply Settings</span>
+          </button>
+          <button id="resetFingerprintBtn" class="action-btn secondary">
+            <i class="fas fa-arrow-rotate-left"></i>
+            <span>Reset Default</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ==================== SCRIPTS PANEL ==================== -->
+      <div id="scripts-panel" class="tab-panel">
+        <div class="panel-header">
+          <div class="panel-icon"><i class="fas fa-code"></i></div>
+          <div>
+            <h2>Custom Scripts</h2>
+            <p class="panel-description">Inject custom JavaScript on any website</p>
+          </div>
+        </div>
+        
+        <div class="script-composer">
+          <input type="text" id="scriptName" placeholder="Script Name" class="form-input">
+          <input type="text" id="scriptUrl" placeholder="URL Pattern (e.g., *://*.example.com/*)" class="form-input">
+          <textarea id="scriptCode" placeholder="// Your JavaScript code here..." rows="6" class="form-textarea code"></textarea>
+          <div class="script-composer-footer">
+            <label class="inline-toggle">
+              <input type="checkbox" id="scriptPersistent" class="toggle-input" checked>
+              <div class="toggle-track small"><div class="toggle-thumb"></div></div>
+              <span>Persistent</span>
+            </label>
+            <div class="btn-group">
+              <button id="testScriptBtn" class="action-btn secondary small">
+                <i class="fas fa-flask"></i>
+                <span>Test</span>
+              </button>
+              <button id="addScriptBtn" class="action-btn primary small">
+                <i class="fas fa-plus"></i>
+                <span>Add Script</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div id="scriptsList" class="scroll-list">
+          <div class="empty-state">
+            <i class="fas fa-terminal"></i>
+            <p>No custom scripts yet</p>
+            <span class="empty-hint">Write code above to get started</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== STATS PANEL ==================== -->
+      <div id="stats-panel" class="tab-panel">
+        <div class="panel-header">
+          <div class="panel-icon"><i class="fas fa-chart-simple"></i></div>
+          <div>
+            <h2>Usage Statistics</h2>
+            <p class="panel-description">Monitor your browsing activity</p>
+          </div>
+        </div>
+        
+        <div class="stats-grid">
+          <div class="stat-card" data-animate="fade-up" style="--delay: 0.05s">
+            <div class="stat-card-icon"><i class="fas fa-clock"></i></div>
+            <span class="stat-card-value" id="sessionDuration">0m</span>
+            <span class="stat-card-label">Session Duration</span>
+          </div>
+          <div class="stat-card" data-animate="fade-up" style="--delay: 0.1s">
+            <div class="stat-card-icon purple"><i class="fas fa-shield-halved"></i></div>
+            <span class="stat-card-value" id="totalBlocked">0</span>
+            <span class="stat-card-label">Threats Blocked</span>
+          </div>
+          <div class="stat-card" data-animate="fade-up" style="--delay: 0.15s">
+            <div class="stat-card-icon blue"><i class="fas fa-globe"></i></div>
+            <span class="stat-card-value" id="totalRequests2">0</span>
+            <span class="stat-card-label">Total Requests</span>
+          </div>
+          <div class="stat-card" data-animate="fade-up" style="--delay: 0.2s">
+            <div class="stat-card-icon green"><i class="fas fa-calendar-check"></i></div>
+            <span class="stat-card-value" id="sessionsCount">0</span>
+            <span class="stat-card-label">Sessions Today</span>
+          </div>
+        </div>
+        
+        <div class="section-divider">
+          <span>Recent Sessions</span>
+        </div>
+        
+        <div id="sessionsList" class="scroll-list">
+          <div class="empty-state">
+            <i class="fas fa-clock-rotate-left"></i>
+            <p>No session history yet</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <span>PrivacyX Pro v4.5</span>
+      <span class="footer-sep">•</span>
+      <span>by Mixaoc & Boivikh</span>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
