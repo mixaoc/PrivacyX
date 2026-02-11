@@ -1,4 +1,4 @@
-# PrivacyX – Complete Privacy & Security for Firefox
+# PrivacyX – #1 Antifinger Print Privacy & Security for Firefox
 
 <div align="center">
 
